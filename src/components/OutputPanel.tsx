@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { OutputFormat } from '../types/crypto'
 import { FormatToggle } from './FormatToggle'
 import { convertFormat } from '../lib/encoding'
+import { CopyButton, Button } from '@web-tools/ui'
 
 interface OutputPanelProps {
   label?: string
@@ -13,15 +14,9 @@ interface OutputPanelProps {
 }
 
 export function OutputPanel({ label = 'Output', value, format, onFormatChange, filename = 'output.txt', rows = 8 }: OutputPanelProps) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = useCallback(() => {
-    if (!value) return
-    navigator.clipboard.writeText(value).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [value])
+  const handleFormatChange = useCallback((fmt: OutputFormat) => {
+    onFormatChange(fmt)
+  }, [onFormatChange])
 
   const handleDownload = useCallback(() => {
     if (!value) return
@@ -34,13 +29,6 @@ export function OutputPanel({ label = 'Output', value, format, onFormatChange, f
     URL.revokeObjectURL(url)
   }, [value, filename])
 
-  const handleFormatChange = useCallback((fmt: OutputFormat) => {
-    onFormatChange(fmt)
-  }, [onFormatChange])
-
-  // Display value converted to current format if needed
-  const displayValue = value
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
@@ -48,7 +36,7 @@ export function OutputPanel({ label = 'Output', value, format, onFormatChange, f
         {value && <FormatToggle format={format} onChange={handleFormatChange} />}
       </div>
       <textarea
-        value={displayValue}
+        value={value}
         readOnly
         rows={rows}
         spellCheck={false}
@@ -58,12 +46,8 @@ export function OutputPanel({ label = 'Output', value, format, onFormatChange, f
       />
       {value && (
         <div className="flex items-center gap-2">
-          <button onClick={handleCopy} className="btn-secondary text-xs">
-            {copied ? '✓ Copied' : 'Copy'}
-          </button>
-          <button onClick={handleDownload} className="btn-secondary text-xs">
-            Download
-          </button>
+          <CopyButton value={value} size="sm" />
+          <Button size="sm" variant="secondary" onClick={handleDownload}>Download</Button>
         </div>
       )}
     </div>

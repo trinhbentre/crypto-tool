@@ -1,3 +1,4 @@
+import { ModeSelector } from '@web-tools/ui'
 import type { Mode } from '../types/crypto'
 
 interface ModeBarProps {
@@ -15,21 +16,12 @@ const MODES: { id: Mode; label: string; shortcut: string }[] = [
 
 export function ModeBar({ mode, onModeChange }: ModeBarProps) {
   return (
-    <div className="flex gap-1 bg-surface-900 p-1 rounded-lg border border-surface-700 w-fit flex-wrap">
-      {MODES.map(m => (
-        <button
-          key={m.id}
-          onClick={() => onModeChange(m.id)}
-          title={m.shortcut}
-          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors duration-150 cursor-pointer ${
-            mode === m.id
-              ? 'bg-accent text-surface-900 font-semibold'
-              : 'text-text-secondary hover:text-text-primary'
-          }`}
-        >
-          {m.label}
-        </button>
-      ))}
-    </div>
+    <ModeSelector
+      options={MODES.map(m => ({ id: m.id, label: m.label, shortcut: m.shortcut }))}
+      activeId={mode}
+      onChange={id => onModeChange(id as Mode)}
+      variant="pill"
+      aria-label="Select mode"
+    />
   )
 }

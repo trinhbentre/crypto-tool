@@ -11,7 +11,7 @@ export interface ShortcutHandlers {
 const MODES: Mode[] = ['encrypt', 'decrypt', 'sign', 'verify', 'keygen']
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
-  const { onRun, onCopy, onClear, onModeChange } = handlers
+  const { onCopy, onClear, onModeChange } = handlers
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const ctrl = e.ctrlKey || e.metaKey
@@ -45,7 +45,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
         onModeChange(MODES[idx])
       }
     }
-  }, [onRun, onCopy, onClear, onModeChange])
+  }, [onCopy, onClear, onModeChange])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)

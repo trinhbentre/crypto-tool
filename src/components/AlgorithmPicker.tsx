@@ -1,3 +1,4 @@
+import { Button } from '@web-tools/ui'
 import type { Mode, Algorithm } from '../types/crypto'
 
 interface AlgorithmPickerProps {
@@ -27,26 +28,21 @@ function getAlgosForMode(mode: Mode): Algorithm[][] {
 export function AlgorithmPicker({ mode, algorithm, onAlgorithmChange }: AlgorithmPickerProps) {
   const groups = getAlgosForMode(mode)
 
-  const btnClass = (alg: Algorithm) =>
-    `px-3 py-1.5 rounded-md text-sm font-mono transition-colors duration-150 cursor-pointer ${
-      algorithm === alg
-        ? 'bg-accent text-surface-900 font-semibold'
-        : 'bg-surface-700 text-text-secondary border border-surface-600 hover:bg-surface-600'
-    }`
-
   return (
     <div className="flex gap-2 flex-wrap items-center">
       {groups.map((group, gi) => (
         <div key={gi} className="flex items-center gap-1.5 flex-wrap">
           {gi > 0 && <span className="text-surface-600">|</span>}
           {group.map(alg => (
-            <button
+            <Button
               key={alg}
+              size="md"
+              variant={algorithm === alg ? 'primary' : 'secondary'}
               onClick={() => onAlgorithmChange(alg)}
-              className={btnClass(alg)}
+              className="font-mono"
             >
               {alg}
-            </button>
+            </Button>
           ))}
         </div>
       ))}

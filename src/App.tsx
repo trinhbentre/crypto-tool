@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useStorage } from '@web-tools/ui'
 import { Header } from './components/Header'
 import { ModeBar } from './components/ModeBar'
 import { AlgorithmPicker } from './components/AlgorithmPicker'
@@ -13,7 +14,6 @@ import { ShortcutHints } from './components/ShortcutHints'
 import { HistoryPanel } from './components/HistoryPanel'
 import { useHistory } from './hooks/useHistory'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
-import { useStorage } from './hooks/useStorage'
 import type { Mode, Algorithm, SymmetricAlgorithm, SignatureAlgorithm, KeyGenType, OutputFormat } from './types/crypto'
 
 const DEFAULT_ENCRYPT_ALG: SymmetricAlgorithm = 'AES-GCM'
